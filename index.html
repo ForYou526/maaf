@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For You 💌</title>
+
+<style>
+body{
+margin:0;
+font-family:'Comic Sans MS', cursive;
+text-align:center;
+background:linear-gradient(-45deg,#ffc1d6,#ff9acb,#ffb6c1,#ffd6ec);
+background-size:400% 400%;
+animation:bgmove 15s ease infinite;
+overflow:hidden;
+}
+
+@keyframes bgmove{
+0%{background-position:0% 50%}
+50%{background-position:100% 50%}
+100%{background-position:0% 50%}
+}
+
+.container{padding-top:80px;}
+
+/* ENVELOPE */
+.envelope{
+width:220px;
+height:140px;
+background:#ff6fa5;
+margin:auto;
+position:relative;
+border-radius:10px;
+cursor:pointer;
+box-shadow:0 10px 25px rgba(0,0,0,0.2);
+}
+
+.flap{
+width:220px;
+height:110px;
+background:#ff8fc4;
+position:absolute;
+top:0;
+left:0;
+transform-origin:top;
+transition:transform 1s ease;
+border-radius:10px 10px 0 0;
+}
+
+.envelope.open .flap{
+transform:rotateX(180deg);
+}
+
+/* PAPER */
+.paper{
+width:300px;
+min-height:200px;
+background:white;
+margin:20px auto;
+padding:20px;
+border-radius:15px;
+box-shadow:0 10px 30px rgba(0,0,0,0.2);
+display:none;
+color:#ff4b8b;
+}
+
+button{
+padding:10px 20px;
+margin:10px;
+border:none;
+border-radius:20px;
+cursor:pointer;
+font-weight:bold;
+}
+
+.yes{background:#ff4b8b;color:white;}
+#noBtn{background:white;color:#ff4b8b;position:absolute;}
+
+.love{
+position:fixed;
+top:-10px;
+font-size:24px;
+animation:fall linear forwards;
+}
+
+@keyframes fall{
+to{transform:translateY(100vh);opacity:0;}
+}
+
+footer{
+position:fixed;
+bottom:10px;
+width:100%;
+font-size:14px;
+color:#ff4b8b;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>Hai Sayangku 🥺💖</h2>
+
+<div class="envelope" id="envelope" onclick="openEnvelope()">
+<div class="flap"></div>
+</div>
+
+<div class="paper" id="paper">
+<p id="text"></p>
+
+<div id="buttons" style="display:none;">
+<h3>Maafin aku yaa? 🥺</h3>
+<button class="yes" onclick="forgive()">Iyaaa 🤍</button>
+<button id="noBtn" onmouseover="moveNo()">Gamau 😝</button>
+</div>
+</div>
+
+<h3 id="ending"></h3>
+
+</div>
+
+<footer>
+Powered by Raihan Nadir Widodo 💕
+</footer>
+
+<audio id="beep">
+<source src="https://www.soundjay.com/button/beep-07.wav">
+</audio>
+
+<script>
+
+/* OPEN ENVELOPE */
+function openEnvelope(){
+let env=document.getElementById("envelope");
+env.classList.add("open");
+setTimeout(()=>{
+env.style.display="none";
+document.getElementById("paper").style.display="block";
+typeEffect();
+},1000);
+}
+
+/* TYPE EFFECT */
+let message="Sayang... aku mau minta maaf yaa 🥺 Kalau aku bikin kamu sedih atau kesel, itu bukan niat aku sama sekali. Aku cuma manusia yang masih belajar jadi yang terbaik buat kamu. Kamu itu penting banget buat aku, jadi jangan tinggalin aku yaa 🤍";
+
+let i=0;
+
+function typeEffect(){
+if(i<message.length){
+document.getElementById("text").innerHTML+=message.charAt(i);
+document.getElementById("beep").play();
+i++;
+setTimeout(typeEffect,35);
+}else{
+document.getElementById("buttons").style.display="block";
+}
+}
+
+/* NO BUTTON KABUR */
+function moveNo(){
+let btn=document.getElementById("noBtn");
+btn.style.top=Math.random()*70+"%";
+btn.style.left=Math.random()*70+"%";
+}
+
+/* YES */
+function forgive(){
+document.getElementById("buttons").style.display="none";
+document.getElementById("ending").innerHTML=
+"Aku janji bakal lebih baik lagi 🥺💖 Makasih udah maafin aku yaaa 🤍";
+loveRain();
+}
+
+/* LOVE RAIN */
+function loveRain(){
+for(let i=0;i<40;i++){
+let love=document.createElement("div");
+love.classList.add("love");
+love.innerHTML="💖";
+love.style.left=Math.random()*100+"vw";
+love.style.animationDuration=(Math.random()*2+3)+"s";
+document.body.appendChild(love);
+setTimeout(()=>{love.remove();},5000);
+}
+}
+
+</script>
+
+</body>
+</html>
