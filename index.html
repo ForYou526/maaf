@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Romantic Page</title>
+
+<style>
+
+body{
+margin:0;
+overflow:hidden;
+font-family:sans-serif;
+text-align:center;
+transition:2s;
+background:linear-gradient(180deg,#ffc0e6,#ffd6ef);
+}
+
+/* BACKGROUND FLOWER */
+.flower{
+position:fixed;
+top:-50px;
+font-size:24px;
+animation:flowerFall linear infinite;
+opacity:0.8;
+}
+
+@keyframes flowerFall{
+to{
+transform:translateY(110vh) rotate(360deg);
+}
+}
+
+/* FAIRY LIGHT */
+.fairy{
+position:fixed;
+top:0;
+width:100%;
+display:flex;
+justify-content:space-around;
+z-index:5;
+}
+
+.bulb{
+width:12px;
+height:12px;
+border-radius:50%;
+background:yellow;
+box-shadow:0 0 15px yellow;
+animation:blink 1s infinite alternate;
+}
+
+@keyframes blink{
+from{opacity:0.3}
+to{opacity:1}
+}
+
+/* MOON */
+.moon{
+position:fixed;
+top:60px;
+right:60px;
+width:100px;
+height:100px;
+background:#fff;
+border-radius:50%;
+box-shadow:0 0 50px white;
+}
+
+/* STARS */
+.star{
+position:fixed;
+width:3px;
+height:3px;
+background:white;
+border-radius:50%;
+animation:twinkle 2s infinite alternate;
+}
+
+@keyframes twinkle{
+from{opacity:0.2}
+to{opacity:1}
+}
+
+/* FIREWORK */
+.firework{
+position:fixed;
+width:5px;
+height:5px;
+border-radius:50%;
+}
+
+@keyframes explode{
+from{
+transform:scale(1);
+opacity:1;
+}
+to{
+transform:scale(8);
+opacity:0;
+}
+}
+
+/* LOVE PARTICLE */
+.love{
+position:fixed;
+font-size:20px;
+animation:loveFly 3s linear forwards;
+}
+
+@keyframes loveFly{
+to{
+transform:translateY(-300px) rotate(360deg);
+opacity:0;
+}
+}
+
+button{
+padding:12px 25px;
+font-size:18px;
+border:none;
+border-radius:20px;
+background:#ff4b8b;
+color:white;
+cursor:pointer;
+margin-top:40px;
+}
+
+</style>
+</head>
+
+<body>
+
+<h1 style="margin-top:120px;">Klik tombol ini 💖</h1>
+<button onclick="romanticNight()">Surprise</button>
+
+<div class="fairy" id="fairy"></div>
+<div class="moon"></div>
+
+<script>
+
+/* FLOWER FALL */
+for(let i=0;i<30;i++){
+let flower=document.createElement("div");
+flower.className="flower";
+flower.innerHTML=["🌸","🌺","🌷","🌹"][Math.floor(Math.random()*4)];
+flower.style.left=Math.random()*100+"vw";
+flower.style.animationDuration=(Math.random()*5+5)+"s";
+document.body.appendChild(flower);
+}
+
+/* FAIRY LIGHT */
+let fairy=document.getElementById("fairy");
+for(let i=0;i<20;i++){
+let bulb=document.createElement("div");
+bulb.className="bulb";
+bulb.style.animationDelay=(Math.random()*2)+"s";
+fairy.appendChild(bulb);
+}
+
+/* NIGHT MODE */
+function romanticNight(){
+
+document.body.style.background="#000";
+
+/* STARS */
+for(let i=0;i<120;i++){
+let star=document.createElement("div");
+star.className="star";
+star.style.top=Math.random()*100+"vh";
+star.style.left=Math.random()*100+"vw";
+star.style.animationDelay=Math.random()*2+"s";
+document.body.appendChild(star);
+}
+
+/* FIREWORK LOOP */
+setInterval(firework,800);
+
+/* LOVE PARTICLE */
+setInterval(loveParticle,400);
+}
+
+/* FIREWORK */
+function firework(){
+
+let x=Math.random()*window.innerWidth;
+let y=Math.random()*window.innerHeight/2;
+
+for(let i=0;i<20;i++){
+
+let f=document.createElement("div");
+f.className="firework";
+f.style.left=x+"px";
+f.style.top=y+"px";
+f.style.background=`hsl(${Math.random()*360},100%,60%)`;
+
+f.style.animation="explode 1s forwards";
+
+document.body.appendChild(f);
+
+setTimeout(()=>{f.remove()},1000);
+}
+
+}
+
+/* LOVE PARTICLE */
+function loveParticle(){
+
+let love=document.createElement("div");
+love.className="love";
+love.innerHTML="💖";
+
+love.style.left=Math.random()*100+"vw";
+love.style.bottom="0";
+
+document.body.appendChild(love);
+
+setTimeout(()=>{love.remove()},3000);
+
+}
+
+</script>
+
+</body>
+</html>
