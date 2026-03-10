@@ -3,127 +3,133 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Romantic Page</title>
+
+<title>Love Tree</title>
 
 <style>
 
 body{
 margin:0;
-overflow:hidden;
-font-family:sans-serif;
-text-align:center;
-transition:2s;
-background:linear-gradient(180deg,#ffc0e6,#ffd6ef);
-}
-
-/* BACKGROUND FLOWER */
-.flower{
-position:fixed;
-top:-50px;
-font-size:24px;
-animation:flowerFall linear infinite;
-opacity:0.8;
-}
-
-@keyframes flowerFall{
-to{
-transform:translateY(110vh) rotate(360deg);
-}
-}
-
-/* FAIRY LIGHT */
-.fairy{
-position:fixed;
-top:0;
-width:100%;
+font-family:Arial;
+height:100vh;
 display:flex;
-justify-content:space-around;
-z-index:5;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+background:#1b1b1b;
+color:white;
+overflow:hidden;
+transition:1s;
 }
 
-.bulb{
-width:12px;
-height:12px;
-border-radius:50%;
-background:yellow;
-box-shadow:0 0 15px yellow;
-animation:blink 1s infinite alternate;
+/* LOVE MODE */
+
+.love-mode{
+background: radial-gradient(circle,#ff4b7d,#300010);
 }
 
-@keyframes blink{
-from{opacity:0.3}
-to{opacity:1}
-}
-
-/* MOON */
-.moon{
-position:fixed;
-top:60px;
-right:60px;
-width:100px;
-height:100px;
-background:#fff;
-border-radius:50%;
-box-shadow:0 0 50px white;
-}
-
-/* STARS */
-.star{
-position:fixed;
-width:3px;
-height:3px;
-background:white;
-border-radius:50%;
-animation:twinkle 2s infinite alternate;
-}
-
-@keyframes twinkle{
-from{opacity:0.2}
-to{opacity:1}
-}
-
-/* FIREWORK */
-.firework{
-position:fixed;
-width:5px;
-height:5px;
-border-radius:50%;
-}
-
-@keyframes explode{
-from{
-transform:scale(1);
-opacity:1;
-}
-to{
-transform:scale(8);
-opacity:0;
-}
-}
-
-/* LOVE PARTICLE */
-.love{
-position:fixed;
-font-size:20px;
-animation:loveFly 3s linear forwards;
-}
-
-@keyframes loveFly{
-to{
-transform:translateY(-300px) rotate(360deg);
-opacity:0;
-}
-}
+/* BUTTON */
 
 button{
-padding:12px 25px;
-font-size:18px;
+padding:15px 30px;
+font-size:20px;
 border:none;
-border-radius:20px;
-background:#ff4b8b;
-color:white;
+border-radius:30px;
 cursor:pointer;
+background:#444;
+color:white;
+transition:0.5s;
+}
+
+.love-mode button{
+background:#ff2f6b;
+}
+
+/* TREE SECTION */
+
+.tree-section{
+display:none;
+text-align:center;
+}
+
+/* HEART SEED */
+
+.heart{
+font-size:60px;
+animation:heartbeat 1s infinite;
+}
+
+@keyframes heartbeat{
+0%{transform:scale(1)}
+50%{transform:scale(1.2)}
+100%{transform:scale(1)}
+}
+
+/* TREE */
+
+.tree{
+margin-top:30px;
+position:relative;
+width:200px;
+height:250px;
+}
+
+.trunk{
+position:absolute;
+bottom:0;
+left:50%;
+transform:translateX(-50%);
+width:20px;
+height:120px;
+background:#6b3e26;
+border-radius:10px;
+animation:growTrunk 3s forwards;
+}
+
+@keyframes growTrunk{
+0%{height:0}
+100%{height:120px}
+}
+
+/* LEAVES */
+
+.leaves{
+position:absolute;
+bottom:120px;
+left:50%;
+transform:translateX(-50%);
+font-size:40px;
+animation:growLeaves 3s forwards;
+}
+
+@keyframes growLeaves{
+0%{transform:translateX(-50%) scale(0)}
+100%{transform:translateX(-50%) scale(1)}
+}
+
+/* FALLING HEARTS */
+
+.fall{
+position:fixed;
+top:-20px;
+color:#ff4b7d;
+animation:fall 5s linear infinite;
+}
+
+@keyframes fall{
+0%{transform:translateY(0)}
+100%{transform:translateY(110vh)}
+}
+
+/* TIMER */
+
+.timer{
 margin-top:40px;
+font-size:28px;
+background:rgba(255,255,255,0.1);
+padding:20px;
+border-radius:15px;
+backdrop-filter:blur(10px);
 }
 
 </style>
@@ -131,93 +137,103 @@ margin-top:40px;
 
 <body>
 
-<h1 style="margin-top:120px;">Klik tombol ini 💖</h1>
-<button onclick="romanticNight()">Surprise</button>
+<button onclick="startLove()">Aktifkan Love Mode ❤️</button>
 
-<div class="fairy" id="fairy"></div>
-<div class="moon"></div>
+<div class="tree-section" id="treeSection">
+
+<div class="heart">❤️</div>
+
+<div class="tree">
+
+<div class="trunk"></div>
+
+<div class="leaves">
+❤️ ❤️ ❤️
+</div>
+
+</div>
+
+<div class="timer">
+
+<h2>Kita sudah bersama selama</h2>
+
+<div id="time"></div>
+
+</div>
+
+</div>
 
 <script>
 
-/* FLOWER FALL */
-for(let i=0;i<30;i++){
-let flower=document.createElement("div");
-flower.className="flower";
-flower.innerHTML=["🌸","🌺","🌷","🌹"][Math.floor(Math.random()*4)];
-flower.style.left=Math.random()*100+"vw";
-flower.style.animationDuration=(Math.random()*5+5)+"s";
-document.body.appendChild(flower);
-}
+/* LOVE MODE */
 
-/* FAIRY LIGHT */
-let fairy=document.getElementById("fairy");
-for(let i=0;i<20;i++){
-let bulb=document.createElement("div");
-bulb.className="bulb";
-bulb.style.animationDelay=(Math.random()*2)+"s";
-fairy.appendChild(bulb);
-}
+function startLove(){
 
-/* NIGHT MODE */
-function romanticNight(){
+document.body.classList.add("love-mode")
 
-document.body.style.background="#000";
+document.querySelector("button").style.display="none"
 
-/* STARS */
-for(let i=0;i<120;i++){
-let star=document.createElement("div");
-star.className="star";
-star.style.top=Math.random()*100+"vh";
-star.style.left=Math.random()*100+"vw";
-star.style.animationDelay=Math.random()*2+"s";
-document.body.appendChild(star);
-}
+document.getElementById("treeSection").style.display="block"
 
-/* FIREWORK LOOP */
-setInterval(firework,800);
-
-/* LOVE PARTICLE */
-setInterval(loveParticle,400);
-}
-
-/* FIREWORK */
-function firework(){
-
-let x=Math.random()*window.innerWidth;
-let y=Math.random()*window.innerHeight/2;
-
-for(let i=0;i<20;i++){
-
-let f=document.createElement("div");
-f.className="firework";
-f.style.left=x+"px";
-f.style.top=y+"px";
-f.style.background=`hsl(${Math.random()*360},100%,60%)`;
-
-f.style.animation="explode 1s forwards";
-
-document.body.appendChild(f);
-
-setTimeout(()=>{f.remove()},1000);
-}
+createHearts()
 
 }
 
-/* LOVE PARTICLE */
-function loveParticle(){
+/* FALLING HEARTS */
 
-let love=document.createElement("div");
-love.className="love";
-love.innerHTML="💖";
+function createHearts(){
 
-love.style.left=Math.random()*100+"vw";
-love.style.bottom="0";
+setInterval(()=>{
 
-document.body.appendChild(love);
+const heart=document.createElement("div")
 
-setTimeout(()=>{love.remove()},3000);
+heart.className="fall"
+
+heart.innerHTML="❤️"
+
+heart.style.left=Math.random()*100+"vw"
+
+heart.style.fontSize=(20+Math.random()*30)+"px"
+
+document.body.appendChild(heart)
+
+setTimeout(()=>heart.remove(),5000)
+
+},300)
 
 }
+
+/* LOVE TIMER */
+
+const startDate=new Date("2024-10-25T00:00:00")
+
+function updateTimer(){
+
+const now=new Date()
+
+const diff=now-startDate
+
+const days=Math.floor(diff/(1000*60*60*24))
+
+const hours=Math.floor(diff/(1000*60*60)%24)
+
+const minutes=Math.floor(diff/(1000*60)%60)
+
+const seconds=Math.floor(diff/1000%60)
+
+document.getElementById("time").innerHTML=
+
+days+" hari "+
+
+hours+" jam "+
+
+minutes+" menit "+
+
+seconds+" detik ❤️"
+
+}
+
+setInterval(updateTimer,1000)
 
 </script>
 
